@@ -1,16 +1,213 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.ProfileFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Profile" />
+        android:orientation="vertical"
+        android:background="#A738FF"
+        tools:context=".ui.ProfileFragment">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/discoverText2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="30dp"
+                android:text="Profile"
+                android:textColor="#FFF"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/clickEditBtn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:rotation="45"
+                android:layout_marginEnd="20dp"
+                android:layout_gravity="end"
+                android:layout_marginTop="30dp"
+                android:src="@drawable/edit_pencil"
+                app:tint="@color/white" />
+        </FrameLayout>
+
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/profile_image"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_marginTop="20dp"
+            android:elevation="30dp"
+            android:layout_gravity="center|top"
+            android:src="@drawable/profile_pic"
+            app:civ_border_width="10dp"
+            app:civ_border_color="#FFFFFF" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardCornerRadius="30dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|top"
+
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|top"
+                    android:layout_marginTop="20dp"
+                    android:text="Rishabh Mehta"
+                    android:textColor="#000"
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_margin="30dp"
+                    android:layout_width="320dp"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="15dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="13dp"
+                        android:layout_gravity="start|top">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="About"
+                            android:textColor="#000"
+                            android:textSize="19sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="7dp"
+                            android:text="I am a final year Computer Engineering student from Pillai HOC College of Engineering
+and Technology, I'm interested in programming."
+                            android:textColor="#000"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Interests"
+                            android:layout_marginTop="30dp"
+                            android:layout_marginBottom="10dp"
+                            android:textColor="#000"
+                            android:textSize="19sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="300dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.chip.Chip
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="#A738FF"
+                                android:layout_centerHorizontal="true"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                android:text="Food | 5" />
+
+                            <com.google.android.material.chip.Chip
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="#A738FF"
+                                android:layout_marginStart="7dp"
+                                android:layout_centerHorizontal="true"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                android:text="Reading | 2" />
+
+                            <com.google.android.material.chip.Chip
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="#A738FF"
+                                android:layout_marginStart="7dp"
+                                android:layout_centerHorizontal="true"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                android:text="Movies | 4" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="300dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.chip.Chip
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="#A738FF"
+                                android:layout_centerHorizontal="true"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                android:text="Swimming | 1" />
+
+                            <com.google.android.material.chip.Chip
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="#A738FF"
+                                android:layout_marginStart="7dp"
+                                android:layout_centerHorizontal="true"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                android:text="Programming | 5" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="300dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.chip.Chip
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="#A738FF"
+                                android:layout_centerHorizontal="true"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                android:text="Exercise | 2" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
 
 
-</FrameLayout>
+                </androidx.cardview.widget.CardView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp" />
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+
+    </LinearLayout>
+</layout>

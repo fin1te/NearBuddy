@@ -28,4 +28,10 @@ class ChatFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_chat, container, false)
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        requireActivity().window.statusBarColor = Color.GRAY
+    }
 }
