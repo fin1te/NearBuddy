@@ -16,10 +16,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val window = this.window
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-        window.statusBarColor = this.resources.getColor(R.color.purple_500)
+//        val window = this.window
+//        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+//        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+//        window.statusBarColor = this.resources.getColor(R.color.purple_500)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
