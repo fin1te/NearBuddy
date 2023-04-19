@@ -39,7 +39,6 @@ class ProfileFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-
         requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         requireActivity().window.statusBarColor = resources.getColor(R.color.discoverBtn)
     }
