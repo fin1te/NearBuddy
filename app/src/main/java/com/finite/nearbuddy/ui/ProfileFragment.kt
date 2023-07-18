@@ -20,7 +20,6 @@ class ProfileFragment : Fragment() {
 
 
     private var binding: FragmentProfileBinding? = null
-    private val nearbyViewModel by activityViewModels<NearbyViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,19 +40,6 @@ class ProfileFragment : Fragment() {
         binding?.clickEditBtn?.setOnClickListener{
             Toast.makeText(activity, "Edit your Profile.", Toast.LENGTH_SHORT).show()
         }
-//        var currentClient = null
-//        if(nearbyViewModel.connectionClient != null) {
-//            var currentClient = nearbyViewModel.connectionClient
-//        }
-
-            Nearby.getConnectionsClient(requireActivity().applicationContext).sendPayload(nearbyViewModel.endptId, Payload.fromBytes("Hello Profile".toByteArray())).addOnSuccessListener {
-                Toast.makeText(activity, "Payload sent.", Toast.LENGTH_SHORT).show()
-            }.addOnFailureListener {
-                Toast.makeText(activity, "$it", Toast.LENGTH_SHORT).show()
-                Log.d("Sender", "Payload not sent: $it : ${nearbyViewModel.endptId}")
-            }
-
-
     }
 
     override fun onResume() {

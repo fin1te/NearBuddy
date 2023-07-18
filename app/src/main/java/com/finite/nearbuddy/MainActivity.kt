@@ -7,18 +7,13 @@ import android.net.wifi.WifiManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.WindowManager
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.finite.nearbuddy.databinding.ActivityMainBinding
-import com.finite.nearbuddy.ui.NearbyViewModel
 import com.google.android.gms.nearby.Nearby
 
 class MainActivity : AppCompatActivity() {

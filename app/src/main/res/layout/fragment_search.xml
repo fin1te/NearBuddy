@@ -48,7 +48,7 @@
             android:layout_marginTop="150dp"
             android:layout_marginBottom="200dp"
             android:backgroundTint="#A738FF"
-            app:cardCornerRadius="30dp"
+            app:cardCornerRadius="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -58,7 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Discover"
+                android:text=""
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="20sp"
