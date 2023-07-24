@@ -1,36 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ui.ChatFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
 
-    <ImageView
-        android:layout_marginTop="100dp"
-        android:layout_gravity="center"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:src="@drawable/ic_no_message"
-        android:contentDescription="nil" />
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textColor="#3C4859"
-        android:textSize="30sp"
-        android:textAlignment="center"
-        android:text="There are no \nnew messages" />
+    </data>
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textColor="#3C4859"
-        android:textAlignment="center"
-        android:layout_marginTop="30dp"
-        android:textSize="15sp"
-        android:text="You are all caught up!\nFind new users to chat in the Nearby Tab." />
+        android:background="#FFF"
+        android:orientation="vertical"
+        tools:context=".ui.ChatFragment">
 
-</LinearLayout>
+        <!--No Chat Layout-->
+        <LinearLayout
+            android:id="@+id/noMessageLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_gravity="center"
+                android:contentDescription="nil"
+                android:src="@drawable/ic_no_message" />
+            <!-- TODO: Update blank fragment layout -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="There are no \nnew messages"
+                android:textAlignment="center"
+                android:textColor="#3C4859"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="You are all caught up!\nFind new users to chat in the Nearby Tab."
+                android:textAlignment="center"
+                android:textColor="#3C4859"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <!--Chat Layout-->
+        <LinearLayout
+            android:id="@+id/chatLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="5dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="10dp"
+                    android:orientation="horizontal">
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/profilePicture"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:layout_marginStart="10dp"
+                        android:src="@drawable/googleg_disabled_color_18" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/user2_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Rishabh"
+                            android:layout_marginStart="10dp"
+                            android:paddingTop="3dp"
+                            android:textColor="#3C4859"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/user2_age_gender"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:textSize="14sp"
+                            android:paddingTop="3dp"
+                            android:textColor="#3C4859"
+                            android:text="20 | Male"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewChat"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:clipToPadding="false"
+                android:padding="8dp"
+                android:scrollbars="vertical" />
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="80dp"
+                android:columnCount="2"
+                android:padding="5dp"
+                android:rowCount="1">
+
+<!--                <EditText-->
+<!--                    android:id="@+id/editTextMessage"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_columnWeight="3"-->
+<!--                    android:hint="Type your message..."-->
+<!--                    android:imeOptions="actionSend"-->
+<!--                    android:inputType="textMultiLine"-->
+<!--                    android:maxLines="3" />-->
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:id="@+id/editTextMessage"
+                    android:layout_width="0dp"
+                    android:layout_marginStart="8dp"
+                    app:boxCornerRadiusBottomEnd="20dp"
+                    app:boxCornerRadiusBottomStart="20dp"
+                    app:boxCornerRadiusTopEnd="20dp"
+                    app:boxCornerRadiusTopStart="20dp"
+                    app:hintEnabled="false"
+                    android:layout_columnWeight="3"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:background="@drawable/chat_edit_text_background"
+                        android:hint="Type your message..."
+                        android:imeOptions="actionSend"
+                        android:inputType="textMultiLine" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/buttonSend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:src="@drawable/icon_send_button"
+                    android:text="Send" />
+
+            </GridLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</layout>
