@@ -1,9 +1,11 @@
 package com.finite.nearbuddy.ui
 
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,6 +50,14 @@ class ProfileFragment : Fragment() {
         val interestSwimming = sharedPreferences.getString("interestSwimming", "")
         val interestProgramming = sharedPreferences.getString("interestProgramming", "")
         val interestMovies = sharedPreferences.getString("interestMovies", "")
+
+        // set the profile image
+        val profileImage = sharedPreferences.getString("profileImage", "")
+        if (profileImage != "") {
+            val decodedString: ByteArray = Base64.decode(profileImage, Base64.DEFAULT)
+            val decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+            binding?.profileImage?.setImageBitmap(decodedByte)
+        }
 
         binding?.textViewName?.text = name
         binding?.textViewGender?.text = gender

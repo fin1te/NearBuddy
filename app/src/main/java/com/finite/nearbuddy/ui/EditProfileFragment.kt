@@ -1,11 +1,15 @@
 package com.finite.nearbuddy.ui
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
@@ -49,14 +53,10 @@ class EditProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val sharedPreferences =
-            requireActivity().getSharedPreferences("profileDataPreference", Context.MODE_PRIVATE)
+        val sharedPreferences = requireActivity().getSharedPreferences("profileDataPreference", Context.MODE_PRIVATE)
 
         // Updating the profile data with the data stored in shared preferences
-        if (sharedPreferences.contains("name") && sharedPreferences.contains("gender") && sharedPreferences.contains(
-                "dob"
-            )
-        ) {
+        if (sharedPreferences.contains("name") && sharedPreferences.contains("gender") && sharedPreferences.contains("dob")) {
             binding?.editTextName?.setText(sharedPreferences.getString("name", ""))
             binding?.textViewDOB?.text = sharedPreferences.getString("dob", "")
             binding?.aboutEditText?.editText?.setText(sharedPreferences.getString("about", ""))
@@ -69,6 +69,14 @@ class EditProfileFragment : Fragment() {
                 "Female" -> (binding?.genderMenu?.editText as? MaterialAutoCompleteTextView)?.setText(
                     "Female"
                 )
+            }
+
+            // set the profile image
+            val profileImage = sharedPreferences.getString("profileImage", "")
+            if (profileImage != "") {
+                val decodedString: ByteArray = Base64.decode(profileImage, Base64.DEFAULT)
+                val decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+                binding?.profileImage?.setImageBitmap(decodedByte)
             }
 
             // when food is selected, select the food from drop down
@@ -193,6 +201,7 @@ class EditProfileFragment : Fragment() {
             binding!!.editProfileTitle.text = "Complete Profile"
         }
 
+        // set the drop down items
         val genderList = arrayOf("Male", "Female")
         (binding!!.genderMenu.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(genderList)
 
@@ -224,11 +233,19 @@ class EditProfileFragment : Fragment() {
             programmingList
         )
 
-        val moviesList =
-            arrayOf("", "Movies | 1", "Movies | 2", "Movies | 3", "Movies | 4", "Movies | 5")
+        val moviesList = arrayOf("", "Movies | 1", "Movies | 2", "Movies | 3", "Movies | 4", "Movies | 5")
         (binding!!.moviesDropDown.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(
             moviesList
         )
+
+        binding?.profileImage?.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            // start the activity with the gallery intent and set the selected image to the profile image
+            startActivityForResult(intent, 0)
+        }
+
+
 
 
         binding?.saveChanges?.setOnClickListener {
@@ -269,9 +286,10 @@ class EditProfileFragment : Fragment() {
             }
 
 // Step 3: Compress the Bitmap to a byte array (Choose the format as needed)
-            val outputStream = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-            val byteArray: ByteArray = outputStream.toByteArray()
+            //val outputStream = ByteArrayOutputStream()
+            //bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+            //val byteArray: ByteArray = outputStream.toByteArray()
+            val byteArray = compressImageTo300KB(bitmap)
 
 
             // Save the ByteArray to SharedPreferences
@@ -327,4 +345,53 @@ class EditProfileFragment : Fragment() {
         }
 
     }
+
+    private fun compressImageTo300KB(bitmap: Bitmap, quality: Int = 100, attempt: Int = 1): ByteArray {
+        val outputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream)
+        val byteArray = outputStream.toByteArray()
+
+        if (byteArray.size <= 300 * 1024) {
+            // Image is under 300KB, return the compressed byteArray
+            return byteArray
+        } else {
+            // Image size is still larger than 300KB
+            // Reduce the quality by 10% and try again
+            val newQuality = (quality - 10)
+            if (newQuality > 0 && attempt < 10) {
+                return compressImageTo300KB(bitmap, newQuality, attempt + 1)
+            } else {
+                // Image cannot be compressed further or max attempts reached
+                // Return null or take other actions based on your requirements
+                return byteArray
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null) {
+            val selectedImage = data.data
+            val bitmap = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, selectedImage)
+            binding?.profileImage?.setImageBitmap(bitmap)
+
+//            val outputStream = ByteArrayOutputStream()
+//            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+//            val byteArray: ByteArray = outputStream.toByteArray()
+//
+//            val sharedPreferences = requireActivity().getSharedPreferences("profileDataPreference", Context.MODE_PRIVATE)
+//            val editor = sharedPreferences.edit()
+//
+//            editor.putString("profileImage", Base64.encodeToString(byteArray, Base64.DEFAULT))
+//
+//            editor.apply()
+
+            // save the image to the user 1 view model
+//            val tempUser1 = UserProfile(ncvm.user1.name,ncvm.user1.dateOfBirth,ncvm.user1.gender,ncvm.user1.interests,byteArray)
+//            ncvm.user1 = tempUser1
+        }
+    }
+
+
 }

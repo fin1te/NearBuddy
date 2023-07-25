@@ -98,15 +98,15 @@ class MainActivity : AppCompatActivity() {
             val profilePic = sharedPreferences.getString("profileImage", "")
 
             val profilePicByteArray = Base64.decode(profilePic, Base64.DEFAULT)
-            val profilePicBitmap =
-                BitmapFactory.decodeByteArray(profilePicByteArray, 0, profilePicByteArray.size)
-
-            Log.d("CheckBitmap", "${profilePicBitmap == null}")
-            Log.d("CheckByteArray", "${profilePicByteArray == null}")
+//            val profilePicBitmap =
+//                BitmapFactory.decodeByteArray(profilePicByteArray, 0, profilePicByteArray.size)
+//
+//            Log.d("CheckBitmap", "${profilePicBitmap == null}")
+//            Log.d("CheckByteArray", "${profilePicByteArray == null}")
 
             viewModel.user1 = UserProfile(name, dob, gender, interests, profilePicByteArray)
 
-            Log.d("profileUpdated to vm from main", viewModel.user1.toString())
+            Log.d("profileUpdated to vm from main", viewModel.user1.profilePic.size.toString())
         }
     }
 

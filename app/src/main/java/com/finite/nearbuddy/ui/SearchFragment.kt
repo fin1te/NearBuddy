@@ -44,7 +44,14 @@ class SearchFragment : Fragment() {
 
         ncvm.user2.observe(viewLifecycleOwner) { user2 ->
             if (user2.name.isNotBlank()) {
-                Toast.makeText(context, "Connected with ${user2.name}", Toast.LENGTH_SHORT).show()
+//                if(!ncvm.isConnectionActive) {
+//                    Toast.makeText(context, "Connected with ${user2.name}", Toast.LENGTH_SHORT).show()
+//                    ncvm.isConnectionActive = true
+//                }
+                if (!ncvm._isConnected.value!!) {
+                    Toast.makeText(context, "Connected with ${user2.name}", Toast.LENGTH_SHORT).show()
+                    ncvm._isConnected.value = true
+                }
                 binding?.searchLottie?.pauseAnimation()
                 binding?.discoverBtn?.background?.setTint(resources.getColor(R.color.discoverBtn))
                 binding?.discoverBtn?.radius = 45.0F

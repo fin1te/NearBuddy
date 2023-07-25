@@ -63,7 +63,7 @@ class ChatAdapter(
 
         fun bind(chatMessage: ChatMessage) {
             val u2Bitmap = BitmapFactory.decodeByteArray(
-                ncvm.user1.profilePic,
+                ncvm.user2.value!!.profilePic,
                 0,
                 ncvm.user2.value!!.profilePic.size
             )

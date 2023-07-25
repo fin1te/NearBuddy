@@ -49,8 +49,9 @@ class ConnectionViewModel(application: Application) : AndroidViewModel(applicati
     private val _chatMessages = MutableLiveData<MutableList<ChatMessage>>()
     val chatMessages: LiveData<MutableList<ChatMessage>> = _chatMessages
 
-    private val _isConnected = MutableLiveData(false)
+    val _isConnected = MutableLiveData(false)
     val isConnected: LiveData<Boolean> = _isConnected
+
 
     // Function to initialize the chatMessages list with an empty list
     init {
@@ -185,10 +186,14 @@ class ConnectionViewModel(application: Application) : AndroidViewModel(applicati
                         Log.d("DebugData", "Reaching OK")
                         // endpoint id of the connected device
                         currentEndPoint = endpointId
-                        _isConnected.value = true
+                        //_isConnected.value = true
 
                         val data = Payload.fromBytes(getUserProfileByteArray())
-                        Nearby.getConnectionsClient(context).sendPayload(endpointId, data)
+                        Nearby.getConnectionsClient(context).sendPayload(endpointId, data).addOnSuccessListener {
+                            Log.d("DebugData", "onConnectionResult: success")
+                        }.addOnFailureListener { e ->
+                            Log.d("DebugData", "onConnectionResult: fail ${e.toString()}")
+                        }
                         Nearby.getConnectionsClient(context).stopDiscovery()
                         isDiscovering = false
                     }
