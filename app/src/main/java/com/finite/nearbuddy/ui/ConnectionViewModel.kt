@@ -214,6 +214,7 @@ class ConnectionViewModel(application: Application) : AndroidViewModel(applicati
                 Log.d("DebugData", "onDisconnected: Endpoint disconnected")
                 currentEndPoint = ""
                 _isConnected.value = false
+                user2.value = UserProfile("", "", "", mapOf(), "".toByteArray(Charsets.UTF_8))
             }
         }
 
