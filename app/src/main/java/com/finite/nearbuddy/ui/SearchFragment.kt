@@ -119,6 +119,4 @@ class SearchFragment : Fragment() {
         super.onDestroyView()
         binding = null
     }
-
-
 }

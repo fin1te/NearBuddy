@@ -6,18 +6,27 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
+import android.graphics.Matrix
+import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.media.ExifInterface
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.loader.content.CursorLoader
 import com.finite.nearbuddy.MainActivity
 import com.finite.nearbuddy.R
 import com.finite.nearbuddy.databinding.FragmentEditProfileBinding
@@ -53,6 +62,18 @@ class EditProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val paddingInDp = 80
+        val scale: Float = resources.displayMetrics.density
+        val paddingInPixels = (paddingInDp * scale + 0.5f).toInt()
+
+        if (requireActivity() is MainActivity) {
+            binding!!.editProfileTitle.text = "Edit Profile"
+            binding!!.detailsLayout.setPadding(0, 0, 0, paddingInPixels)
+        } else if (requireActivity() is SplashActivity) {
+            binding!!.editProfileTitle.text = "Complete Profile"
+            binding!!.detailsLayout.setPadding(0, 0, 0, (paddingInPixels)/16)
+        }
+
         val sharedPreferences = requireActivity().getSharedPreferences("profileDataPreference", Context.MODE_PRIVATE)
 
         // Updating the profile data with the data stored in shared preferences
@@ -60,16 +81,6 @@ class EditProfileFragment : Fragment() {
             binding?.editTextName?.setText(sharedPreferences.getString("name", ""))
             binding?.textViewDOB?.text = sharedPreferences.getString("dob", "")
             binding?.aboutEditText?.editText?.setText(sharedPreferences.getString("about", ""))
-            when (sharedPreferences.getString("gender", "")) {
-                // when gender is male, select the male from drop down
-                "Male" -> (binding?.genderMenu?.editText as? MaterialAutoCompleteTextView)?.setText(
-                    "Male"
-                )
-
-                "Female" -> (binding?.genderMenu?.editText as? MaterialAutoCompleteTextView)?.setText(
-                    "Female"
-                )
-            }
 
             // set the profile image
             val profileImage = sharedPreferences.getString("profileImage", "")
@@ -79,172 +90,43 @@ class EditProfileFragment : Fragment() {
                 binding?.profileImage?.setImageBitmap(decodedByte)
             }
 
-            // when food is selected, select the food from drop down
-            when (sharedPreferences.getString("interestFood", "")) {
-                "Food | 1" -> (binding?.foodDropDown?.editText as? MaterialAutoCompleteTextView)?.setText(
-                    "Food | 1"
-                )
-
-                "Food | 2" -> (binding?.foodDropDown?.editText as? MaterialAutoCompleteTextView)?.setText(
-                    "Food | 2"
-                )
-
-                "Food | 3" -> (binding?.foodDropDown?.editText as? MaterialAutoCompleteTextView)?.setText(
-                    "Food | 3"
-                )
-
-                "Food | 4" -> (binding?.foodDropDown?.editText as? MaterialAutoCompleteTextView)?.setText(
-                    "Food | 4"
-                )
-
-                "Food | 5" -> (binding?.foodDropDown?.editText as? MaterialAutoCompleteTextView)?.setText(
-                    "Food | 5"
-                )
-            }
-
-            // when reading is selected, select the reading from drop down
-            when (sharedPreferences.getString("interestReading", "")) {
-                "Reading | 1" -> (binding?.readingDropDown?.editText as? MaterialAutoCompleteTextView)?.setText(
-                    "Reading | 1"
-                )
-
-                "Reading | 2" -> (binding?.readingDropDown?.editText as? MaterialAutoCompleteTextView)?.setText(
-                    "Reading | 2"
-                )
-
-                "Reading | 3" -> (binding?.readingDropDown?.editText as? MaterialAutoCompleteTextView)?.setText(
-                    "Reading | 3"
-                )
-
-                "Reading | 4" -> (binding?.readingDropDown?.editText as? MaterialAutoCompleteTextView)?.setText(
-                    "Reading | 4"
-                )
-
-                "Reading | 5" -> (binding?.readingDropDown?.editText as? MaterialAutoCompleteTextView)?.setText(
-                    "Reading | 5"
-                )
-            }
-
-            // when swimming is selected, select the swimming from drop down
-            when (sharedPreferences.getString("interestSwimming", "")) {
-                "Swimming | 1" -> (binding?.swimmingDropDown?.editText as? MaterialAutoCompleteTextView)?.setText(
-                    "Swimming | 1"
-                )
-
-                "Swimming | 2" -> (binding?.swimmingDropDown?.editText as? MaterialAutoCompleteTextView)?.setText(
-                    "Swimming | 2"
-                )
-
-                "Swimming | 3" -> (binding?.swimmingDropDown?.editText as? MaterialAutoCompleteTextView)?.setText(
-                    "Swimming | 3"
-                )
-
-                "Swimming | 4" -> (binding?.swimmingDropDown?.editText as? MaterialAutoCompleteTextView)?.setText(
-                    "Swimming | 4"
-                )
-
-                "Swimming | 5" -> (binding?.swimmingDropDown?.editText as? MaterialAutoCompleteTextView)?.setText(
-                    "Swimming | 5"
-                )
-            }
-
-            // when programming is selected, select the programming from drop down
-            when (sharedPreferences.getString("interestProgramming", "")) {
-                "Programming | 1" -> (binding?.programmingDropDown?.editText as? MaterialAutoCompleteTextView)?.setText(
-                    "Programming | 1"
-                )
-
-                "Programming | 2" -> (binding?.programmingDropDown?.editText as? MaterialAutoCompleteTextView)?.setText(
-                    "Programming | 2"
-                )
-
-                "Programming | 3" -> (binding?.programmingDropDown?.editText as? MaterialAutoCompleteTextView)?.setText(
-                    "Programming | 3"
-                )
-
-                "Programming | 4" -> (binding?.programmingDropDown?.editText as? MaterialAutoCompleteTextView)?.setText(
-                    "Programming | 4"
-                )
-
-                "Programming | 5" -> (binding?.programmingDropDown?.editText as? MaterialAutoCompleteTextView)?.setText(
-                    "Programming | 5"
-                )
-            }
-
-            // when movies is selected, select the movies from drop down
-            when (sharedPreferences.getString("interestMovies", "")) {
-                "Movies | 1" -> (binding?.moviesDropDown?.editText as? MaterialAutoCompleteTextView)?.setText(
-                    "Movies | 1"
-                )
-
-                "Movies | 2" -> (binding?.moviesDropDown?.editText as? MaterialAutoCompleteTextView)?.setText(
-                    "Movies | 2"
-                )
-
-                "Movies | 3" -> (binding?.moviesDropDown?.editText as? MaterialAutoCompleteTextView)?.setText(
-                    "Movies | 3"
-                )
-
-                "Movies | 4" -> (binding?.moviesDropDown?.editText as? MaterialAutoCompleteTextView)?.setText(
-                    "Movies | 4"
-                )
-
-                "Movies | 5" -> (binding?.moviesDropDown?.editText as? MaterialAutoCompleteTextView)?.setText(
-                    "Movies | 5"
-                )
-            }
-        }
-
-        if (requireActivity() is MainActivity) {
-            binding!!.editProfileTitle.text = "Edit Profile"
-        } else if (requireActivity() is SplashActivity) {
-            binding!!.editProfileTitle.text = "Complete Profile"
+            (binding?.genderMenu?.editText as? MaterialAutoCompleteTextView)?.setText(sharedPreferences.getString("gender", ""))
+            (binding?.foodDropDown?.editText as? MaterialAutoCompleteTextView)?.setText(sharedPreferences.getString("interestFood", ""))
+            (binding?.readingDropDown?.editText as? MaterialAutoCompleteTextView)?.setText(sharedPreferences.getString("interestReading", ""))
+            (binding?.swimmingDropDown?.editText as? MaterialAutoCompleteTextView)?.setText(sharedPreferences.getString("interestSwimming", ""))
+            (binding?.programmingDropDown?.editText as? MaterialAutoCompleteTextView)?.setText(sharedPreferences.getString("interestProgramming", ""))
+            (binding?.moviesDropDown?.editText as? MaterialAutoCompleteTextView)?.setText(sharedPreferences.getString("interestMovies", ""))
         }
 
         // set the drop down items
         val genderList = arrayOf("Male", "Female")
-        (binding!!.genderMenu.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(genderList)
-
         val foodList = arrayOf("", "Food | 1", "Food | 2", "Food | 3", "Food | 4", "Food | 5")
-        (binding!!.foodDropDown.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(foodList)
-
-        val readingList =
-            arrayOf("", "Reading | 1", "Reading | 2", "Reading | 3", "Reading | 4", "Reading | 5")
-        (binding!!.readingDropDown.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(
-            readingList
-        )
-
-        val swimmingList = arrayOf(
-            "", "Swimming | 1", "Swimming | 2", "Swimming | 3", "Swimming | 4", "Swimming | 5"
-        )
-        (binding!!.swimmingDropDown.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(
-            swimmingList
-        )
-
-        val programmingList = arrayOf(
-            "",
-            "Programming | 1",
-            "Programming | 2",
-            "Programming | 3",
-            "Programming | 4",
-            "Programming | 5"
-        )
-        (binding!!.programmingDropDown.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(
-            programmingList
-        )
-
+        val readingList = arrayOf("", "Reading | 1", "Reading | 2", "Reading | 3", "Reading | 4", "Reading | 5")
+        val swimmingList = arrayOf("", "Swimming | 1", "Swimming | 2", "Swimming | 3", "Swimming | 4", "Swimming | 5")
         val moviesList = arrayOf("", "Movies | 1", "Movies | 2", "Movies | 3", "Movies | 4", "Movies | 5")
-        (binding!!.moviesDropDown.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(
-            moviesList
-        )
+        val programmingList = arrayOf("", "Programming | 1", "Programming | 2", "Programming | 3", "Programming | 4", "Programming | 5")
+
+        (binding!!.genderMenu.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(genderList)
+        (binding!!.foodDropDown.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(foodList)
+        (binding!!.readingDropDown.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(readingList)
+        (binding!!.swimmingDropDown.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(swimmingList)
+        (binding!!.programmingDropDown.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(programmingList)
+        (binding!!.moviesDropDown.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(moviesList)
 
         binding?.profileImage?.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
-            // start the activity with the gallery intent and set the selected image to the profile image
             startActivityForResult(intent, 0)
         }
 
+        binding!!.genderMenuAutoComplete.setOnClickListener { closeKeyboard() }
+        binding!!.foodDropDownAutoComplete.setOnClickListener { closeKeyboard() }
+        binding!!.readingDropDownAutoComplete.setOnClickListener { closeKeyboard() }
+        binding!!.swimmingDropDownAutoComplete.setOnClickListener { closeKeyboard() }
+        binding!!.programmingDropDownAutoComplete.setOnClickListener { closeKeyboard() }
+        binding!!.moviesDropDownAutoComplete.setOnClickListener { closeKeyboard() }
+
+        // close the keyboard when the user clicks outside the textinputlayout
 
 
 
@@ -368,29 +250,77 @@ class EditProfileFragment : Fragment() {
         }
     }
 
+     //a function that closes the keyboard when the user clicks outside the edit text
+    private fun closeKeyboard() {
+         Log.d("DebugData", "closeKeyboard: called")
+        if (requireActivity().currentFocus != null) {
+            Log.d("DebugData", "closeKeyboard: if block called")
+            val inputMethodManager =
+                requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(
+                requireActivity().currentFocus!!.windowToken, 0
+            )
+        }
+    }
+
+
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//
+//        if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null) {
+//            val selectedImage = data.data
+//            val bitmap = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, selectedImage)
+//            binding?.profileImage?.setImageBitmap(bitmap)
+//        }
+//    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null) {
-            val selectedImage = data.data
-            val bitmap = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, selectedImage)
-            binding?.profileImage?.setImageBitmap(bitmap)
-
-//            val outputStream = ByteArrayOutputStream()
-//            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-//            val byteArray: ByteArray = outputStream.toByteArray()
-//
-//            val sharedPreferences = requireActivity().getSharedPreferences("profileDataPreference", Context.MODE_PRIVATE)
-//            val editor = sharedPreferences.edit()
-//
-//            editor.putString("profileImage", Base64.encodeToString(byteArray, Base64.DEFAULT))
-//
-//            editor.apply()
-
-            // save the image to the user 1 view model
-//            val tempUser1 = UserProfile(ncvm.user1.name,ncvm.user1.dateOfBirth,ncvm.user1.gender,ncvm.user1.interests,byteArray)
-//            ncvm.user1 = tempUser1
+            val selectedImage = data.data!!
+            val filePath = getPathFromUri(requireContext(),selectedImage)!! // Utility method to get the file path from the Uri
+            val rotatedBitmap = rotateImageIfNeeded(filePath)
+            binding?.profileImage?.setImageBitmap(rotatedBitmap)
         }
+    }
+
+    private fun rotateImageIfNeeded(filePath: String): Bitmap? {
+        val bitmap = BitmapFactory.decodeFile(filePath)
+        val exif = ExifInterface(filePath)
+        val orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED)
+
+        val matrix = Matrix()
+        when (orientation) {
+            ExifInterface.ORIENTATION_ROTATE_90 -> matrix.postRotate(90f)
+            ExifInterface.ORIENTATION_ROTATE_180 -> matrix.postRotate(180f)
+            ExifInterface.ORIENTATION_ROTATE_270 -> matrix.postRotate(270f)
+            ExifInterface.ORIENTATION_FLIP_HORIZONTAL -> matrix.preScale(-1f, 1f)
+            ExifInterface.ORIENTATION_FLIP_VERTICAL -> matrix.preScale(1f, -1f)
+            ExifInterface.ORIENTATION_TRANSPOSE -> {
+                matrix.postScale(-1f, 1f)
+                matrix.postRotate(-90f)
+            }
+            ExifInterface.ORIENTATION_TRANSVERSE -> {
+                matrix.postScale(-1f, 1f)
+                matrix.postRotate(90f)
+            }
+        }
+
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+    }
+
+    private fun getPathFromUri(context: Context, uri: Uri): String? {
+        val projection = arrayOf(MediaStore.Images.Media.DATA)
+        val loader = CursorLoader(context, uri, projection, null, null, null)
+        val cursor = loader.loadInBackground()
+
+        val columnIndex = cursor?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        cursor?.moveToFirst()
+        val path = cursor?.getString(columnIndex ?: 0)
+        cursor?.close()
+
+        return path
     }
 
 

@@ -15,6 +15,7 @@
         tools:context=".ui.EditProfileFragment">
 
         <ScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true">
@@ -66,6 +67,7 @@
                     app:civ_border_width="10dp" />
 
                 <LinearLayout
+                    android:id="@+id/detailsLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="30dp"
@@ -100,7 +102,7 @@
                             android:layout_height="wrap_content"
                             android:layout_rowWeight="1"
                             android:layout_columnWeight="1"
-                            android:text="Gender ⚧️"
+                            android:text="@string/gender"
                             android:textAlignment="center"
                             android:textColor="#000"
                             android:textSize="22sp"
@@ -129,6 +131,7 @@
                             android:layout_gravity="center">
 
                             <AutoCompleteTextView
+                                android:id="@+id/genderMenuAutoComplete"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="Select Gender"
@@ -160,6 +163,7 @@
                         app:cardCornerRadius="15dp">
 
                         <LinearLayout
+                            android:id="@+id/bioLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -217,9 +221,10 @@
                                     android:layout_marginBottom="5dp">
 
                                     <AutoCompleteTextView
+                                        android:id="@+id/foodDropDownAutoComplete"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:hint="Interest in Food 🍕️"
+                                        android:hint="@string/interest_in_food"
                                         android:inputType="none"
                                         android:textAlignment="textStart" />
                                 </com.google.android.material.textfield.TextInputLayout>
@@ -235,6 +240,7 @@
                                     android:layout_marginBottom="5dp">
 
                                     <AutoCompleteTextView
+                                        android:id="@+id/readingDropDownAutoComplete"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:hint="Interest in Reading 📚"
@@ -253,9 +259,10 @@
                                     android:layout_marginBottom="5dp">
 
                                     <AutoCompleteTextView
+                                        android:id="@+id/swimmingDropDownAutoComplete"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:hint="Interest in Swimming 🏊‍♂"
+                                        android:hint="@string/interest_in_swimming"
                                         android:inputType="none"
                                         android:textAlignment="textStart" />
                                 </com.google.android.material.textfield.TextInputLayout>
@@ -271,6 +278,7 @@
                                     android:layout_marginBottom="5dp">
 
                                     <AutoCompleteTextView
+                                        android:id="@+id/programmingDropDownAutoComplete"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:hint="Interest in Programming 💻"
@@ -289,6 +297,7 @@
                                     android:layout_marginBottom="5dp">
 
                                     <AutoCompleteTextView
+                                        android:id="@+id/moviesDropDownAutoComplete"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:hint="Interest in Movies 🎥"
