@@ -126,10 +126,6 @@ class EditProfileFragment : Fragment() {
         binding!!.programmingDropDownAutoComplete.setOnClickListener { closeKeyboard() }
         binding!!.moviesDropDownAutoComplete.setOnClickListener { closeKeyboard() }
 
-        // close the keyboard when the user clicks outside the textinputlayout
-
-
-
         binding?.saveChanges?.setOnClickListener {
 
             val sharedPreferences = requireActivity().getSharedPreferences(
@@ -150,11 +146,8 @@ class EditProfileFragment : Fragment() {
             )
             editor.putString("interestMovies", binding!!.moviesDropDown.editText?.text.toString())
 
-
             val drawable: Drawable? = binding!!.profileImage.drawable
 
-
-// Step 2: Convert the Drawable to a Bitmap
             val bitmap: Bitmap = if (drawable is BitmapDrawable) {
                 drawable.bitmap
             } else {
@@ -167,16 +160,9 @@ class EditProfileFragment : Fragment() {
                 }
             }
 
-// Step 3: Compress the Bitmap to a byte array (Choose the format as needed)
-            //val outputStream = ByteArrayOutputStream()
-            //bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-            //val byteArray: ByteArray = outputStream.toByteArray()
             val byteArray = compressImageTo300KB(bitmap)
 
-
-            // Save the ByteArray to SharedPreferences
             editor.putString("profileImage", Base64.encodeToString(byteArray, Base64.DEFAULT))
-
             editor.apply()
 
             ncvm.user1 = UserProfile(

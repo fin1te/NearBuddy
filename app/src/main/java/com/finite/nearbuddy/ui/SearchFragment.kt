@@ -1,13 +1,18 @@
 package com.finite.nearbuddy.ui
 
+import android.app.AlertDialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.finite.nearbuddy.R
 import com.finite.nearbuddy.databinding.FragmentSearchBinding
 
@@ -35,6 +40,7 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         if (!ncvm.isAdvertising) {
             ncvm.startAdvertising()
             binding?.discoverBtn?.background?.setTint(resources.getColor(R.color.discoverBtn))
@@ -49,7 +55,7 @@ class SearchFragment : Fragment() {
 //                    ncvm.isConnectionActive = true
 //                }
                 if (!ncvm._isConnected.value!!) {
-                    Toast.makeText(context, "Connected with ${user2.name}", Toast.LENGTH_SHORT).show()
+                    showCustomDialog()
                     ncvm._isConnected.value = true
                 }
                 binding?.searchLottie?.pauseAnimation()
@@ -82,6 +88,34 @@ class SearchFragment : Fragment() {
                 ncvm.startDiscovery()
             }
         }
+    }
+
+    private fun showCustomDialog() {
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_user2_connected, null)
+        val dialogBuilder = AlertDialog.Builder(requireContext()).setView(dialogView)
+        val customDialog = dialogBuilder.create()
+        customDialog.setCancelable(false)
+
+        dialogView.findViewById<TextView>(R.id.dialogMessageTextView).text = "Connected with ${ncvm.user2.value?.name}"
+        customDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        // set the dialogwidth to wrap content
+        customDialog.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+
+        val paddingInDp = 50
+        val scale: Float = resources.displayMetrics.density
+        val paddingInPixels = (paddingInDp * scale + 0.5f).toInt()
+        // add horizontal padding to the dialog of 50dp not pixels (left and right)
+        customDialog.window?.decorView?.setPadding(paddingInPixels, 0, paddingInPixels, 0)
+
+        dialogView.findViewById<View>(R.id.buttonOK).setOnClickListener {
+            customDialog.dismiss()
+            findNavController().navigate(R.id.nav_chat)
+        }
+
+        customDialog.show()
     }
 
 

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="5dp"
+    app:cardCornerRadius="20dp"
+    android:layout_marginHorizontal="50dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:paddingVertical="20dp"
+        android:gravity="center">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animationView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:lottie_rawRes="@raw/success_tick"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="false" />
+
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/connected_dialog_title"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/dialogMessageTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Message"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/compatibilityTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Compatibility : 100%"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"
+            android:layout_marginTop="8dp" />
+
+        <Button
+            android:id="@+id/buttonOK"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chat"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/colorPrimary"
+            android:layout_marginTop="16dp" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
